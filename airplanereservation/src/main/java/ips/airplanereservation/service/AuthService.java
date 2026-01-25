@@ -1,11 +1,16 @@
 package ips.airplanereservation.service;
 
+import ips.airplanereservation.dto.LoginRequestDto;
+import ips.airplanereservation.dto.LoginResponseDto;
 import ips.airplanereservation.dto.SignupRequestDto;
 import ips.airplanereservation.dto.SignupResponseDto;
 import ips.airplanereservation.entity.User;
 import ips.airplanereservation.entity.type.RoleType;
 import ips.airplanereservation.repository.UserRepository;
+import ips.airplanereservation.security.AuthUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +22,8 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final AuthUtil authUtil;
 
     public SignupResponseDto signup(SignupRequestDto dto) {
 
@@ -34,5 +41,27 @@ public class AuthService {
         userRepository.save(user);
 
         return new SignupResponseDto(user.getId(), user.getUsername());
+    }
+
+    public LoginResponseDto login(LoginRequestDto dto) {
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        dto.getUsername(),
+                        dto.getPassword()
+                )
+        );
+
+        User user = userRepository.findByUsername(dto.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String token = authUtil.generateAccessToken(user);
+
+
+        return new LoginResponseDto(
+                token,
+                user.getId()
+        );
+
     }
 }

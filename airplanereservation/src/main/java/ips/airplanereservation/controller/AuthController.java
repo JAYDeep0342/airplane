@@ -1,5 +1,7 @@
 package ips.airplanereservation.controller;
 
+import ips.airplanereservation.dto.LoginRequestDto;
+import ips.airplanereservation.dto.LoginResponseDto;
 import ips.airplanereservation.dto.SignupRequestDto;
 import ips.airplanereservation.dto.SignupResponseDto;
 import ips.airplanereservation.service.AuthService;
@@ -16,7 +18,10 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<SignupResponseDto> signup(@RequestBody SignupRequestDto dto) {
-        System.out.println("🔥 SIGNUP CONTROLLER HIT");
         return ResponseEntity.ok(authService.signup(dto));
+    }
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto dto) {
+        return ResponseEntity.ok(authService.login(dto));
     }
 }
