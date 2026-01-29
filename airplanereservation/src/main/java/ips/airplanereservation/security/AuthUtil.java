@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-
-@Slf4j
 @Component
 public class AuthUtil {
 
@@ -27,11 +25,10 @@ public class AuthUtil {
         );
     }
 
-    // ===== GENERATE TOKEN =====
     public String generateAccessToken(User user) {
 
         return Jwts.builder()
-                .setSubject(user.getUsername())   // ✅ FIX HERE
+                .setSubject(user.getUsername())
                 .claim("userId", user.getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))

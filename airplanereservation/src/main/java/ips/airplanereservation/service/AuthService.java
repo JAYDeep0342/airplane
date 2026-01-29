@@ -1,9 +1,6 @@
 package ips.airplanereservation.service;
 
-import ips.airplanereservation.dto.LoginRequestDto;
-import ips.airplanereservation.dto.LoginResponseDto;
-import ips.airplanereservation.dto.SignupRequestDto;
-import ips.airplanereservation.dto.SignupResponseDto;
+import ips.airplanereservation.dto.*;
 import ips.airplanereservation.entity.User;
 import ips.airplanereservation.entity.type.RoleType;
 import ips.airplanereservation.repository.UserRepository;
@@ -64,4 +61,20 @@ public class AuthService {
         );
 
     }
-}
+
+    public AdminResponseDto CreateAdmin(AdminRequestDto dto) {
+        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
+            throw new RuntimeException("Admin already exists");
+        }
+            User admin = User.builder()
+                    .username(dto.getUsername())
+                    .password(passwordEncoder.encode(dto.getPassword()))
+                    .name(dto.getName())
+                    .build();
+        admin.getRoles().add(RoleType.ADMIN);
+        userRepository.save(admin);
+
+            return new AdminResponseDto(admin.getId(), admin.getUsername());
+        }
+        }
+

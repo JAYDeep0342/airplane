@@ -30,6 +30,11 @@ public class User {
 
     @Builder.Default
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id")
+    )
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Set<RoleType> roles = new HashSet<>();
 }
