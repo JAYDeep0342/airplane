@@ -70,8 +70,9 @@ public class AuthService {
                     .username(dto.getUsername())
                     .password(passwordEncoder.encode(dto.getPassword()))
                     .name(dto.getName())
+                    .roles(Set.of(RoleType.ADMIN))
                     .build();
-        admin.getRoles().add(RoleType.ADMIN);
+
         userRepository.save(admin);
 
             return new AdminResponseDto(admin.getId(), admin.getUsername());

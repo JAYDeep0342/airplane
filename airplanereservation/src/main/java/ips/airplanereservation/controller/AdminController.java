@@ -21,7 +21,7 @@ public class AdminController {
     private  final AuthService authService ;
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @PostMapping("/CreateAdmin")
+    @PostMapping("/createAdmin")
     public ResponseEntity<AdminResponseDto> CreateAdmin( @RequestBody AdminRequestDto dto ){
 
         return ResponseEntity.ok(authService.CreateAdmin(dto));
