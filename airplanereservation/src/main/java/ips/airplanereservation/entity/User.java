@@ -37,4 +37,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Set<RoleType> roles = new HashSet<>();
+    @OneToOne
+    @JoinColumn(name = "airline_id", unique = true)
+    private Airline airline;
+
 }

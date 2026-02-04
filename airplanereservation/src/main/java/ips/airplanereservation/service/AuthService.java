@@ -1,10 +1,13 @@
 package ips.airplanereservation.service;
 
 import ips.airplanereservation.dto.*;
+import ips.airplanereservation.entity.Airline;
 import ips.airplanereservation.entity.User;
 import ips.airplanereservation.entity.type.RoleType;
+import ips.airplanereservation.repository.AirlineRepository;
 import ips.airplanereservation.repository.UserRepository;
 import ips.airplanereservation.security.AuthUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +24,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final AuthUtil authUtil;
+    private final AirlineRepository airlineRepository;
 
     public SignupResponseDto signup(SignupRequestDto dto) {
 
@@ -62,20 +66,50 @@ public class AuthService {
 
     }
 
+//    public AdminResponseDto CreateAdmin(AdminRequestDto dto) {
+//        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
+//            throw new RuntimeException("Admin already exists");
+//        }
+//            User admin = User.builder()
+//                    .username(dto.getUsername())
+//                    .password(passwordEncoder.encode(dto.getPassword()))
+//                    .name(dto.getName())
+//                    .roles(Set.of(RoleType.ADMIN))
+//                    .build();
+//
+//        userRepository.save(admin);
+//
+//            return new AdminResponseDto(admin.getId(), admin.getUsername());
+//        }
+//        }
+
+    @Transactional
     public AdminResponseDto CreateAdmin(AdminRequestDto dto) {
+
         if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
             throw new RuntimeException("Admin already exists");
         }
-            User admin = User.builder()
-                    .username(dto.getUsername())
-                    .password(passwordEncoder.encode(dto.getPassword()))
-                    .name(dto.getName())
-                    .roles(Set.of(RoleType.ADMIN))
-                    .build();
+
+        Airline airline = Airline.builder()
+                .name(dto.getAirlineName())
+                .build();
+
+        airlineRepository.save(airline);
+
+        User admin = User.builder()
+                .username(dto.getUsername())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .name(dto.getName())
+                .airline(airline)
+                .build();
+
+        admin.getRoles().add(RoleType.ADMIN);
 
         userRepository.save(admin);
 
-            return new AdminResponseDto(admin.getId(), admin.getUsername());
-        }
-        }
-
+        return new AdminResponseDto(
+                admin.getId(),
+                admin.getUsername()
+        );
+    }
+}

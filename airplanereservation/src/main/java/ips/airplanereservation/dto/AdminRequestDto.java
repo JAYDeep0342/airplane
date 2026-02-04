@@ -7,7 +7,8 @@ import lombok.Generated;
 @Data
 @AllArgsConstructor
 public class AdminRequestDto {
-    private String name ;
-    private String password ;
     private String username;
+    private String password;
+    private String name;
+    private String airlineName;
 }
