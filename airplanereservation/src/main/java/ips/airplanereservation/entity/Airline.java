@@ -3,6 +3,7 @@ package ips.airplanereservation.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,6 +32,14 @@ public class Airline {
                     .toString()
                     .substring(0, 8)
                     .toUpperCase();
+
+
         }
+
     }
+    @OneToMany(mappedBy = "airline")
+    private List<Flight> flights;
+
+    @OneToMany(mappedBy = "airline")
+    private List<InstanceFlight> instanceFlights;
 }

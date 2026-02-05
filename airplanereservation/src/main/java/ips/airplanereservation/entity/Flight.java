@@ -31,4 +31,5 @@ public class Flight {
 
     private String departureTime;
     private String arrivalTime;
+
 }
