@@ -1,9 +1,11 @@
+// 1. User Entity (with Roles)
 package ips.airplanereservation.entity;
 
 import ips.airplanereservation.entity.type.RoleType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +28,18 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(unique = true)
+    private String email;
+
+
+    private String nationality;
+
+    private String address;
+
+    private LocalDate registrationDate;
 
     @Builder.Default
     @ElementCollection(fetch = FetchType.EAGER)
@@ -37,8 +50,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Set<RoleType> roles = new HashSet<>();
+
     @OneToOne
     @JoinColumn(name = "airline_id", unique = true)
     private Airline airline;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Booking> bookings;
 }

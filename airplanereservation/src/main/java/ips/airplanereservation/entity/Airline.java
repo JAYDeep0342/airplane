@@ -2,44 +2,34 @@ package ips.airplanereservation.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
-@Table(name = "airlines")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "airlines")
 public class Airline {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
+    private String airlineName;
 
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(nullable = false, unique = true)
     private String code;
+    private String email ;
+    private LocalDate registrationDate;
 
-    @PrePersist
-    public void generateCode() {
-        if (this.code == null || this.code.isEmpty()) {
-            this.code = "AIR-" + UUID.randomUUID()
-                    .toString()
-                    .substring(0, 8)
-                    .toUpperCase();
+    @OneToMany(mappedBy = "airline", cascade = CascadeType.ALL)
+    private Set<Flight> flights;
 
-
-        }
-
-    }
-    @OneToMany(mappedBy = "airline")
-    private List<Flight> flights;
-
-    @OneToMany(mappedBy = "airline")
-    private List<InstanceFlight> instanceFlights;
+    @OneToOne(mappedBy = "airline")
+    private User user;
 }

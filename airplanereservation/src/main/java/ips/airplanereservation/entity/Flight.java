@@ -1,15 +1,18 @@
+// 3. Flight Entity
 package ips.airplanereservation.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalTime;
+import java.util.Set;
 
 @Entity
-@Table(name = "flights")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "flights")
 public class Flight {
 
     @Id
@@ -20,16 +23,39 @@ public class Flight {
     @JoinColumn(name = "airline_id", nullable = false)
     private Airline airline;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String flightNumber;
 
-    @Column(nullable = false)
-    private String source;
+    private String aircraftModel;
+
+    private Integer totalSeats;
+
+    private Integer economySeats;
+
+    private Integer businessSeats;
 
     @Column(nullable = false)
-    private String destination;
+    private String departureAirport;
 
-    private String departureTime;
-    private String arrivalTime;
+    @Column(nullable = false)
+    private String arrivalAirport;
 
+    private LocalTime departureTime;
+
+    private LocalTime arrivalTime;
+
+    private String flightDuration;
+
+    private String daysOfOperation; // Mon,Tue,Wed
+
+    private String status; // Active, Inactive
+
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
+    private Set<FlightInstance> flightInstances;
+
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
+    private Set<SeatConfiguration> seatConfigurations;
+
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
+    private Set<Pricing> pricings;
 }

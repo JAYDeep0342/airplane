@@ -11,4 +11,8 @@ public class AdminRequestDto {
     private String password;
     private String name;
     private String airlineName;
+    private String code;
+    private String email ;
+    private String nationality;
+
 }

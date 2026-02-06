@@ -2,6 +2,6 @@ package ips.airplanereservation.entity.type;
 
 public enum RoleType {
     USER,
-    ADMIN,
+    AIRLINE_ADMIN,
     SUPER_ADMIN
 }

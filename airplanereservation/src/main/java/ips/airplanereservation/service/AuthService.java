@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Service
@@ -36,6 +37,10 @@ public class AuthService {
                 .username(dto.getUsername())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
+                .address(dto.getAddress())
+                .email(dto.getEmail())
+                .nationality(dto.getNationality())
+                .registrationDate(LocalDate.now())
                 .roles(Set.of(RoleType.USER))
                 .build();
 
@@ -65,24 +70,6 @@ public class AuthService {
         );
 
     }
-
-//    public AdminResponseDto CreateAdmin(AdminRequestDto dto) {
-//        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
-//            throw new RuntimeException("Admin already exists");
-//        }
-//            User admin = User.builder()
-//                    .username(dto.getUsername())
-//                    .password(passwordEncoder.encode(dto.getPassword()))
-//                    .name(dto.getName())
-//                    .roles(Set.of(RoleType.ADMIN))
-//                    .build();
-//
-//        userRepository.save(admin);
-//
-//            return new AdminResponseDto(admin.getId(), admin.getUsername());
-//        }
-//        }
-
     @Transactional
     public AdminResponseDto CreateAdmin(AdminRequestDto dto) {
 
@@ -91,7 +78,11 @@ public class AuthService {
         }
 
         Airline airline = Airline.builder()
-                .name(dto.getAirlineName())
+                .name(dto.getName())
+                .code(dto.getCode())
+                .email(dto.getEmail())
+                .airlineName(dto.getAirlineName())
+                .registrationDate(LocalDate.now())
                 .build();
 
         airlineRepository.save(airline);
@@ -100,10 +91,13 @@ public class AuthService {
                 .username(dto.getUsername())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
+                .email(dto.getEmail())
                 .airline(airline)
+                .registrationDate(LocalDate.now())
+                .nationality(dto.getNationality())
                 .build();
 
-        admin.getRoles().add(RoleType.ADMIN);
+        admin.getRoles().add(RoleType.AIRLINE_ADMIN);
 
         userRepository.save(admin);
 
