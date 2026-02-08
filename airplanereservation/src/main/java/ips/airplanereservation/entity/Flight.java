@@ -48,7 +48,7 @@ public class Flight {
 
     private String daysOfOperation; // Mon,Tue,Wed
 
-    private String status; // Active, Inactive
+    private String status;
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
     private Set<FlightInstance> flightInstances;

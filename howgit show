@@ -1,0 +1,53 @@
+[33mcommit ab50a0b435ac2bcb0d95b9677e422e39fa2ead2d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Jaydeep0342 <jaydeep0342@gmail.com>
+Date:   Fri Feb 6 14:54:25 2026 +0530
+
+    schema ready
+
+[33mcommit 5c3bc6ec3888514a765fb7cbb6bac4730ef4d1e4[m
+Author: Jaydeep0342 <jaydeep0342@gmail.com>
+Date:   Thu Feb 5 22:15:23 2026 +0530
+
+    find relation
+
+[33mcommit c129cf68d36d5a0aef84ed11e206f9b37438536f[m
+Author: Jaydeep0342 <jaydeep0342@gmail.com>
+Date:   Wed Feb 4 19:27:37 2026 +0530
+
+    relationship between user and airplane
+
+[33mcommit 06dc78c89c97c3bfeb148fbe04f04ce5a4f4a1fc[m
+Author: Jaydeep0342 <jaydeep0342@gmail.com>
+Date:   Sat Jan 31 21:39:25 2026 +0530
+
+    table
+
+[33mcommit 2f47c4bc8e3291a3f0662e706581f1ecff6a59af[m
+Author: Jaydeep0342 <jaydeep0342@gmail.com>
+Date:   Fri Jan 30 14:07:28 2026 +0530
+
+    create super_admin of admin
+
+[33mcommit 05bac6fdee9bf2f69d076f6b740559dc038d89e5[m
+Author: Jaydeep0342 <jaydeep0342@gmail.com>
+Date:   Thu Jan 29 21:47:55 2026 +0530
+
+    403
+
+[33mcommit 6087da9a8efd967e52869b80b7578bc30ff49b94[m
+Author: Jaydeep0342 <jaydeep0342@gmail.com>
+Date:   Sun Jan 25 18:54:32 2026 +0530
+
+    login
+
+[33mcommit c285c9eafba01f62b36ae52e9f838a5b274cea60[m
+Author: Jaydeep0342 <jaydeep0342@gmail.com>
+Date:   Sat Jan 24 21:17:05 2026 +0530
+
+    signup
+
+[33mcommit 5064552fcee22d1cc8ac676ad17ccc774d1a0910[m
+Author: Jaydeep0342 <jaydeep0342@gmail.com>
+Date:   Sat Jan 24 19:04:29 2026 +0530
+
+    Initial commit - JWT auth with DTO

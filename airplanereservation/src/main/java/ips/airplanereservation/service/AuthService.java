@@ -2,9 +2,11 @@ package ips.airplanereservation.service;
 
 import ips.airplanereservation.dto.*;
 import ips.airplanereservation.entity.Airline;
+import ips.airplanereservation.entity.Flight;
 import ips.airplanereservation.entity.User;
 import ips.airplanereservation.entity.type.RoleType;
 import ips.airplanereservation.repository.AirlineRepository;
+import ips.airplanereservation.repository.FlightRepository;
 import ips.airplanereservation.repository.UserRepository;
 import ips.airplanereservation.security.AuthUtil;
 import jakarta.transaction.Transactional;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Service
@@ -26,6 +29,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final AuthUtil authUtil;
     private final AirlineRepository airlineRepository;
+    private final FlightRepository flightRepository;
 
     public SignupResponseDto signup(SignupRequestDto dto) {
 
@@ -95,9 +99,9 @@ public class AuthService {
                 .airline(airline)
                 .registrationDate(LocalDate.now())
                 .nationality(dto.getNationality())
+                .roles(Set.of(RoleType.AIRLINE_ADMIN))
                 .build();
 
-        admin.getRoles().add(RoleType.AIRLINE_ADMIN);
 
         userRepository.save(admin);
 
@@ -105,5 +109,34 @@ public class AuthService {
                 admin.getId(),
                 admin.getUsername()
         );
+    }
+    public FlightResponseDto createFlight(FlightRequestDto flightDto) {
+        if (flightRepository.findByFlightNumber(flightDto.getFlightNumber()).isPresent()) {
+            throw new RuntimeException("Flight already exists");
+        }
+        Airline airline = airlineRepository.findById(flightDto.getAirlineId())
+                .orElseThrow(() -> new RuntimeException("Airline not found"));
+
+        Flight flight = Flight.builder()
+                .flightNumber(flightDto.getFlightNumber())
+                .aircraftModel(flightDto.getAircraftModel())
+                .totalSeats(flightDto.getTotalSeats())
+                .economySeats(flightDto.getEconomySeats())
+                .businessSeats(flightDto.getBusinessSeats())
+                .departureAirport(flightDto.getDepartureAirport())
+                .arrivalAirport(flightDto.getArrivalAirport())
+                .departureTime(LocalTime.parse(flightDto.getDepartureTime()))
+                .arrivalTime(LocalTime.parse(flightDto.getArrivalTime()))
+                .flightDuration(flightDto.getFlightDuration())
+                .daysOfOperation(flightDto.getDaysOfOperation())
+                .status("ACTIVE")
+                .airline(airline)
+                .build();
+            flightRepository.save(flight);
+        return new FlightResponseDto(
+                flight.getId(),
+                flight.getFlightNumber()
+        );
+
     }
 }
