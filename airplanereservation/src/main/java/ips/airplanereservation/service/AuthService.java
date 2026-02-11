@@ -110,33 +110,7 @@ public class AuthService {
                 admin.getUsername()
         );
     }
-    public FlightResponseDto createFlight(FlightRequestDto flightDto) {
-        if (flightRepository.findByFlightNumber(flightDto.getFlightNumber()).isPresent()) {
-            throw new RuntimeException("Flight already exists");
-        }
-        Airline airline = airlineRepository.findById(flightDto.getAirlineId())
-                .orElseThrow(() -> new RuntimeException("Airline not found"));
 
-        Flight flight = Flight.builder()
-                .flightNumber(flightDto.getFlightNumber())
-                .aircraftModel(flightDto.getAircraftModel())
-                .totalSeats(flightDto.getTotalSeats())
-                .economySeats(flightDto.getEconomySeats())
-                .businessSeats(flightDto.getBusinessSeats())
-                .departureAirport(flightDto.getDepartureAirport())
-                .arrivalAirport(flightDto.getArrivalAirport())
-                .departureTime(LocalTime.parse(flightDto.getDepartureTime()))
-                .arrivalTime(LocalTime.parse(flightDto.getArrivalTime()))
-                .flightDuration(flightDto.getFlightDuration())
-                .daysOfOperation(flightDto.getDaysOfOperation())
-                .status("ACTIVE")
-                .airline(airline)
-                .build();
-            flightRepository.save(flight);
-        return new FlightResponseDto(
-                flight.getId(),
-                flight.getFlightNumber()
-        );
 
     }
-}
+
