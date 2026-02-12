@@ -1,5 +1,6 @@
 package ips.airplanereservation.service;
 
+import ips.airplanereservation.dto.FlightDto;
 import ips.airplanereservation.dto.FlightRequestDto;
 import ips.airplanereservation.dto.FlightResponseDto;
 import ips.airplanereservation.entity.Airline;
@@ -7,10 +8,14 @@ import ips.airplanereservation.entity.Flight;
 import ips.airplanereservation.repository.AirlineRepository;
 import ips.airplanereservation.repository.FlightRepository;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 
@@ -18,6 +23,7 @@ public class FlightService {
 
     private final AirlineRepository airlineRepository;
     private final FlightRepository flightRepository;
+    private final ModelMapper modelMapper;
 
     public FlightResponseDto createFlight(FlightRequestDto flightDto) {
         if (flightRepository.findByFlightNumber(flightDto.getFlightNumber()).isPresent()) {
@@ -52,4 +58,24 @@ public class FlightService {
       Flight flight= flightRepository.findById(id).orElseThrow(() ->new RuntimeException("flight not found"));
       flightRepository.delete(flight);
     }
+
+    public List<FlightDto> findByDepartureCityAndArrivalCityAndDate(
+            String from,
+            String to) {
+
+        List<Flight> flights =
+                flightRepository.findByDepartureAirportAndArrivalAirport(from, to);
+
+        return flights.stream()
+                .map(flight -> {
+
+                    FlightDto dto = modelMapper.map(flight, FlightDto.class);
+
+                    dto.setAirlineName(flight.getAirline().getName());
+
+                    return dto;
+                })
+                .toList();
+    }
+
 }

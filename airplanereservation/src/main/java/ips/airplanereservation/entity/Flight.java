@@ -1,4 +1,3 @@
-// 3. Flight Entity
 package ips.airplanereservation.entity;
 
 import jakarta.persistence.*;
