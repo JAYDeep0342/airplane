@@ -3,10 +3,13 @@ package ips.airplanereservation.service;
 import ips.airplanereservation.dto.FlightDto;
 import ips.airplanereservation.dto.FlightRequestDto;
 import ips.airplanereservation.dto.FlightResponseDto;
+import ips.airplanereservation.dto.FlightUpdateDto;
 import ips.airplanereservation.entity.Airline;
 import ips.airplanereservation.entity.Flight;
+import ips.airplanereservation.entity.FlightInstance;
 import ips.airplanereservation.repository.AirlineRepository;
 import ips.airplanereservation.repository.FlightRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.modelmapper.ModelMapper;
@@ -69,13 +72,21 @@ public class FlightService {
         return flights.stream()
                 .map(flight -> {
 
-                    FlightDto dto = modelMapper.map(flight, FlightDto.class);
+                    FlightDto flightDto = modelMapper.map(flight, FlightDto.class);
 
-                    dto.setAirlineName(flight.getAirline().getName());
+                    flightDto.setAirlineName(flight.getAirline().getName());
 
-                    return dto;
+                    return flightDto;
                 })
                 .toList();
     }
 
+    public  FlightResponseDto updateFlight( Long id, FlightUpdateDto flightUpdateDto) {
+   Flight flight = flightRepository.findById(id) .orElseThrow(()->  new RuntimeException("Flight not Found"));
+   flight.setArrivalAirport(flightUpdateDto.getArrivalAirport());
+   flight.setDepartureAirport(flightUpdateDto.getDepartureAirport());
+   flight.setArrivalTime(flightUpdateDto.getArrivalTime());
+   flight.setDepartureTime(flightUpdateDto.getDepartureTime());
+   return new FlightResponseDto(flight.getId(),flight.getFlightNumber());
+  }
 }

@@ -25,7 +25,6 @@ private  final  JwtAuthFilter jwtAuthFilter;
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
-
         return http.build();
     }
 

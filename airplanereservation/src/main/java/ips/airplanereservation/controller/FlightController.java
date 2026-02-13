@@ -3,9 +3,11 @@ package ips.airplanereservation.controller;
 import ips.airplanereservation.dto.FlightDto;
 import ips.airplanereservation.dto.FlightRequestDto;
 import ips.airplanereservation.dto.FlightResponseDto;
+import ips.airplanereservation.dto.FlightUpdateDto;
 import ips.airplanereservation.entity.Flight;
 import ips.airplanereservation.service.AuthService;
 import ips.airplanereservation.service.FlightService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,5 +45,15 @@ public class FlightController {
                 flightService.findByDepartureCityAndArrivalCityAndDate(from, to);
         return ResponseEntity.ok(flights);
     }
+
+    @PutMapping("/updateFlight/{id}")
+    @PreAuthorize("hasRole('AIRLINE_ADMIN')")
+
+    public ResponseEntity<FlightResponseDto>  updateFlight(@Valid @PathVariable Long id, @RequestBody FlightUpdateDto flightUpdateDto){
+        return ResponseEntity.ok(flightService.updateFlight( id ,flightUpdateDto));
+    }
+
+
+
 
 }
