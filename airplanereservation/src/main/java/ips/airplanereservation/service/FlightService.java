@@ -6,14 +6,10 @@ import ips.airplanereservation.dto.FlightResponseDto;
 import ips.airplanereservation.dto.FlightUpdateDto;
 import ips.airplanereservation.entity.Airline;
 import ips.airplanereservation.entity.Flight;
-import ips.airplanereservation.entity.FlightInstance;
 import ips.airplanereservation.repository.AirlineRepository;
 import ips.airplanereservation.repository.FlightRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.Nullable;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -48,6 +44,7 @@ public class FlightService {
                 .flightDuration(flightDto.getFlightDuration())
                 .daysOfOperation(flightDto.getDaysOfOperation())
                 .status("ACTIVE")
+                .price(flightDto.getPrice())
                 .airline(airline)
                 .build();
         flightRepository.save(flight);

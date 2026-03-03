@@ -48,13 +48,6 @@ public class Flight {
     private String daysOfOperation; // Mon,Tue,Wed
 
     private String status;
+    private  String price;
 
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
-    private Set<FlightInstance> flightInstances;
-
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
-    private Set<SeatConfiguration> seatConfigurations;
-
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
-    private Set<Pricing> pricings;
 }

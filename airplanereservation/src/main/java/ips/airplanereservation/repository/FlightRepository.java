@@ -14,4 +14,10 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
             String departureAirport,
             String arrivalAirport
     );
+
+    List<Flight> findByDepartureAirportIgnoreCaseAndArrivalAirportIgnoreCaseAndDaysOfOperationContainingIgnoreCase(
+            String departureAirport,
+            String arrivalAirport,
+            String day
+    );
 }

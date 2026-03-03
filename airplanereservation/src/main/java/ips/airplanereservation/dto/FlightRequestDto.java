@@ -26,4 +26,5 @@ public class FlightRequestDto {
     private String arrivalTime;
     private String flightDuration;
     private String daysOfOperation;
+    private String price;
 }

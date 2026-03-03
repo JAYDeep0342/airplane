@@ -41,6 +41,5 @@ public class Passenger {
 
     private String mealPreference;
 
-    @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL)
-    private Set<SeatAssignment> seatAssignments;
+
 }
