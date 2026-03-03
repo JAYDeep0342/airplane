@@ -1,15 +1,16 @@
 package ips.airplanereservation.controller;
 
+import ips.airplanereservation.dto.BookingRequestDto;
+import ips.airplanereservation.dto.BookingResponseDto;
 import ips.airplanereservation.dto.FlightDto;
 import ips.airplanereservation.dto.SearchFlightResponseDto;
+import ips.airplanereservation.entity.Booking;
 import ips.airplanereservation.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +31,14 @@ public class UserController {
  return  ResponseEntity.ok(userService. searchFlight(from,to,dayOfOperation));
 
    }
+    @PostMapping("/create-booking")
+    public ResponseEntity<BookingResponseDto> createBooking(
+            @Valid @RequestBody BookingRequestDto request) {
+
+        return ResponseEntity.ok(
+                userService.createBooking(request)
+        );
+    }
 
 
 

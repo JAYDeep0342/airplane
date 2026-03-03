@@ -1,45 +1,20 @@
-// 8. Passenger Entity
 package ips.airplanereservation.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import java.time.LocalDate;
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Table(name = "passengers")
 public class Passenger {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "booking_id", nullable = false)
-    private Booking booking;
+    private String passengerName;
 
-    @Column(nullable = false)
-    private String firstName;
-
-    @Column(nullable = false)
-    private String lastName;
-
-    private LocalDate dateOfBirth;
-
-    private String gender;
-
-    private String passportNumber;
-
-    private String nationality;
-
-    private String passengerType; // Adult, Child, Infant
-
-    private String mealPreference;
-
+    private String passengerEmail;
 
 }

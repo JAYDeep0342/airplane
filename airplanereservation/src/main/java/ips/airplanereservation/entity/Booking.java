@@ -1,41 +1,34 @@
 package ips.airplanereservation.entity;
+
+import ips.airplanereservation.entity.Flight;
+import ips.airplanereservation.entity.User;
 import jakarta.persistence.*;
-import lombok.*;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Table(name = "bookings")
 public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-    @Column(nullable = false)
-    private LocalDateTime bookingDateTime;
+    private int numberOfSeats;
+
+    private double totalPrice;
+
     private String bookingStatus;
-    @Column(precision = 10, scale = 2)
-    private BigDecimal totalAmount;
-    private String paymentStatus;
-    @Column(unique = true)
-    private String pnrNumber;
-    private Integer numberOfPassengers;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
-    private Set<Passenger> passengers;
+    @ManyToOne
+    @JoinColumn(name = "flight_id")
+    private Flight flight;
 
-
-
-    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
-    private Payment payment;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "passenger_id")
+    private Passenger passenger;
 }
