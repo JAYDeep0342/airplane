@@ -1,9 +1,6 @@
 package ips.airplanereservation.controller;
 
-import ips.airplanereservation.dto.BookingRequestDto;
-import ips.airplanereservation.dto.BookingResponseDto;
-import ips.airplanereservation.dto.FlightDto;
-import ips.airplanereservation.dto.SearchFlightResponseDto;
+import ips.airplanereservation.dto.*;
 import ips.airplanereservation.entity.Booking;
 import ips.airplanereservation.service.UserService;
 import jakarta.validation.Valid;
@@ -40,6 +37,11 @@ public class UserController {
         );
     }
 
+    @PostMapping("/payment")
+    public ResponseEntity<PaymentResponseDto> makePayment(
+            @RequestBody PaymentRequestDto request) {
 
+        return ResponseEntity.ok(userService.makePayment(request));
+    }
 
 }

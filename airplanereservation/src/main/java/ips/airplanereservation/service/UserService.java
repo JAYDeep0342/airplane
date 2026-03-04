@@ -1,14 +1,13 @@
 package ips.airplanereservation.service;
-import ips.airplanereservation.dto.BookingRequestDto;
-import ips.airplanereservation.dto.BookingResponseDto;
-import ips.airplanereservation.dto.FlightDto;
-import ips.airplanereservation.dto.SearchFlightResponseDto;
+import ips.airplanereservation.dto.*;
 import ips.airplanereservation.entity.Booking;
 import ips.airplanereservation.entity.Flight;
 import ips.airplanereservation.entity.Passenger;
+import ips.airplanereservation.entity.Payment;
 import ips.airplanereservation.repository.BookingRepository;
 import ips.airplanereservation.repository.FlightRepository;
 import ips.airplanereservation.repository.PassengerRepository;
+import ips.airplanereservation.repository.PaymentRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
@@ -16,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,6 +26,7 @@ public class UserService {
     private final FlightRepository flightRepository;
     private final BookingRepository bookingRepository;
     private final PassengerRepository passengerRepository;
+    private final PaymentRepository paymentRepository;
 
 
     public List<SearchFlightResponseDto> searchFlight(
@@ -50,7 +51,6 @@ public class UserService {
         Flight flight = flightRepository.findById(request.getFlightId())
                 .orElseThrow(() -> new RuntimeException("Flight not found"));
 
-        // 2️⃣ Seat check
         if (flight.getTotalSeats() < request.getNumberOfSeats()) {
             throw new RuntimeException("Not enough seats available");
         }
@@ -94,5 +94,34 @@ public class UserService {
 
         return response;
     }
+
+    public PaymentResponseDto makePayment(PaymentRequestDto request) {
+
+        Booking booking = bookingRepository.findById(request.getBookingId())
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        Payment payment = new Payment();
+        payment.setAmount(booking.getTotalPrice());
+        payment.setPaymentMethod(request.getPaymentMethod());
+        payment.setPaymentStatus("SUCCESS");
+        payment.setPaymentDateTime(LocalDateTime.now());
+        payment.setTransactionId("TXN" + System.currentTimeMillis());
+        payment.setBooking(booking);
+
+        Payment savedPayment = paymentRepository.save(payment);
+
+        booking.setBookingStatus("CONFIRMED");
+        bookingRepository.save(booking);
+
+        PaymentResponseDto response = new PaymentResponseDto();
+        response.setPaymentId(savedPayment.getId());
+        response.setAmount(savedPayment.getAmount());
+        response.setPaymentMethod(savedPayment.getPaymentMethod());
+        response.setPaymentStatus(savedPayment.getPaymentStatus());
+        response.setTransactionId(savedPayment.getTransactionId());
+
+        return response;
+    }
+
 }
 
